@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.time.format.DateTimeFormatter;
+import java.io.IOException;
 import java.time.LocalDate;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,21 +13,34 @@ import org.jsoup.nodes.Element;
 /**
  * This is a utility class that parses relevant DragonCon membership rate information to determine when to send reminders.
  */
-public final class RateDeadlineParser {
+public final class DragonConRateParser {
+    private final Document dragonConMembershipSite;
+    /**
+     * Constructor to instantiate a DragonConRateParser object.
+     */
+    public DragonConRateParser() throws IOException {
+        this.dragonConMembershipSite = Jsoup.connect(Constants.MEMBERSHIP_URL)
+        .userAgent("Mozilla/5.0 (compatible; RemidnerBot/1.0")
+        .timeout(15000)
+        .get();
+    }
+
+    /**
+     * Custom constructor the set the website by default.
+     * @param dragonConMembershipSite the DragonCon membership site to read from.
+     */
+    public DragonConRateParser(final Document dragonConMembershipSite) {
+        this.dragonConMembershipSite = dragonConMembershipSite;
+    }
+    
     /**
      * Retrieves a list of DragonCon membership rates and deadlines.
      * @return a list of DragonCon membership rates and deadlines.
      * @throws Exception in case there is an error while trying to connect to the website, parse the website, and/or grab content.
      */
-    public static final List<DragonConRate> fetchRatesAndDeadlines() throws Exception {
-        // Connect to the DragonCon membership website.
-        Document dragonConMembershipSite = Jsoup.connect(Constants.MEMBERSHIP_URL)
-        .userAgent("Mozilla/5.0 (compatible; RemidnerBot/1.0")
-        .timeout(15000)
-        .get();
-        
+    public final List<DragonConRate> fetchRatesAndDeadlines() throws Exception {
         // Grab the relevant data from the website based on the header.
-        final String rawData = getRelevantTextBlock(dragonConMembershipSite);
+        final String rawData = getRelevantTextBlock(this.dragonConMembershipSite);
         final List<DragonConRate> dragonConRates = new ArrayList<>();
 
         // Parse each line from the relevant data and store it.
@@ -47,7 +61,7 @@ public final class RateDeadlineParser {
      * @return a String representing the relevant text block containing rates and deadlines.
      * @throws IllegalStateException in case there are any issues when parsing the text block(s).
      */
-    private static final String getRelevantTextBlock(final Document doc) throws IllegalStateException {
+    private final String getRelevantTextBlock(final Document doc) throws IllegalStateException {
         // Find the relevant heading to grab the data.
         final Element heading = doc.selectFirst("h1,h2,h3,h4,h5,h6:matchesOwn((?i)" + Constants.SECTION_HEADING + ")");
         if (heading == null) {
@@ -71,7 +85,7 @@ public final class RateDeadlineParser {
      * @param line an individual line on the DragonCon page.
      * @return The individual line as represented by a DragonConRate object.
      */
-    private static final DragonConRate parseDragonConRate(final String line) {
+    private final DragonConRate parseDragonConRate(final String line) {
         // Parse the line, using the text "through" as a delimiter.
         final String lowercaseLine = line.toLowerCase(Locale.ROOT);
         final String price = line.split("\\s+through\\s+|\\s+Through\\s+")[0].trim();

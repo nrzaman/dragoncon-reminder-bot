@@ -16,6 +16,16 @@ repositories {
 dependencies {
     implementation("net.dv8tion:JDA:6.2.0")
     implementation("org.jsoup:jsoup:1.21.2")
+
+    // OR, for explicit JUnit 5 dependencies (recommended for full JUnit 5 features)
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0-M1") // Use the latest version
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0-M1") // Use the latest version
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher") // Use the latest version
+}
+
+// Configure the test task to use the JUnit Platform (for JUnit 5)
+tasks.test {
+    useJUnitPlatform()
 }
 
 java {

@@ -1,7 +1,6 @@
 package com.dragoncon_reminder.util;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -11,11 +10,18 @@ import java.time.LocalDate;
  */
 public final class Reminder {
     /**
-     * Builds reminders to be posted to a Discord channel.
-     * @param dragonConRates the list of DragonCon rates and deadlines that need to be posted.
-     * @return
+     * Constructor to instantiate a DragonConRateParser object.
      */
-    public static final String build(final List<DragonConRate> dragonConRates) {
+    public Reminder() {
+        // Intentionally left blank.
+    }
+
+    /**
+     * Builds a reminder String to be posted to a Discord channel.
+     * @param dragonConRates the list of DragonCon rates and deadlines that need to be posted.
+     * @return a String that contains the reminder content to be posted.
+     */
+    public final String build(final List<DragonConRate> dragonConRates) {
         // Grab today's date to check against the parsed deadlines.
         final LocalDate today = LocalDate.now(Constants.ZONE);
         // Constant thresholds measured in days to determine whether today's date is in one of these windows.
