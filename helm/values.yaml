@@ -10,7 +10,7 @@ image:
   #   - Nexus: nexus.your-cluster.com/dragoncon-reminder-bot (TBD)
   repository: "nrzaman/dragoncon-reminder-bot"
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "v1.0.0"
 
 # Image pull secrets (only needed for private registries like Nexus)
 imagePullSecrets: []
