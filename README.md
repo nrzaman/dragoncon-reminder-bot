@@ -44,7 +44,7 @@ brew install helm
    # Open the .env file to edit with credentials
    vim .env
 ```
-4. You may also need to run the following commands:
+4. You may also need to run the following commands in a Terminal window:
 ```bash
 export DISCORD_TOKEN=[YOUR TOKEN HERE]
 
@@ -52,10 +52,14 @@ export DISCORD_CHANNEL_ID=[YOUR CHANNEL ID HERE]
 ```
 
 ### 2. Build and Run (Quickstart)
+Run the following commands in a Terminal window from the root `dragoncon-reminder-bot` directory:
 
 ```bash
 # Build the JAR file
 make build
+
+# Build the Docker image with a version tag
+make docker-build VERSION=[VERSION NUMBER]
 
 # Run the bot in Docker
 make docker-run
@@ -77,8 +81,12 @@ In Discord, you may use the following commands outside of the quarterly automate
 <img width="384" height="218" alt="image" src="https://github.com/user-attachments/assets/daf77f11-8dc1-4929-af03-7e4911ab396d" />
 
 ### 4. Deployment
+Run the following commands in a Terminal window from the root `dragoncon-reminder-bot` directory:
 
 ```bash
+# Build the JAR file
+make build
+
 # Build the Docker image with a version tag
 make docker-build VERSION=[VERSION NUMBER]
 
