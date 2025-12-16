@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import java.time.LocalDate;
 import java.util.List;
 import com.dragoncon_reminder.util.DragonConRateParser;
@@ -11,29 +10,36 @@ import com.dragoncon_reminder.util.DragonConRate;
 public class DragonConRateParserTest {
 
     /**
-     * Helper method to create a mock HTML document with the given rate content.
-     * The parser expects content with actual text nodes separated by br elements.
-     * @param rates variable number of rate strings
-     * @return a Jsoup Document with the mock HTML structure
+     * Helper method to create a mock HTML document matching the actual DragonCon website structure.
+     * Uses <strong> tags for prices and <br> tags between lines, just like the real site.
+     * @param rates variable number of rate strings (e.g., "$100 through 12/31/2025")
+     * @return a Jsoup Document with realistic HTML structure
      */
     private final Document createMockDocument(final String... rates) {
-        final Document doc = Jsoup.parse(
-            "<html><body>" +
-            "<h2>Dragon Con 5-Day Membership Rates</h2>" +
-            "<p></p>" +
-            "</body></html>"
-        );
+        StringBuilder html = new StringBuilder("<html><body>");
+        html.append("<h3>Dragon Con 5-Day Membership Rates:</h3>");
+        html.append("<p>");
 
-        // Build content with text nodes and br elements
-        final Element p = doc.select("p").first();
         for (int i = 0; i < rates.length; i++) {
-            p.appendText(rates[i]);
+            String rate = rates[i];
+
+            // Extract price (first word) and wrap it in <strong> tags
+            String[] parts = rate.split("\\s+", 2);
+            html.append("<strong>").append(parts[0]).append("</strong>");
+
+            // Add the rest of the line if present
+            if (parts.length > 1) {
+                html.append("&nbsp;").append(parts[1]);
+            }
+
+            // Add <br> between lines (but not after the last one)
             if (i < rates.length - 1) {
-                p.appendElement("br");
+                html.append("\n <br>\n ");
             }
         }
 
-        return doc;
+        html.append("</p></body></html>");
+        return Jsoup.parse(html.toString());
     }
 
     /**
@@ -236,5 +242,66 @@ public class DragonConRateParserTest {
         Assertions.assertEquals(1, rates.size());
         Assertions.assertNull(rates.get(0).getDeadline(), "'At the door' pricing should have no deadline");
         Assertions.assertEquals("$175 at the door", rates.get(0).getPrice());
+    }
+
+    /**
+     * Test parsing multiple rates with realistic HTML structure (matching actual DragonCon website).
+     * This tests the complete flow with <strong> tags, &nbsp;, and <br> separators.
+     */
+    @Test
+    void testFetchRatesAndDeadlines_MultipleRatesRealistic() throws Exception {
+        final Document mockDoc = createMockDocument(
+            "$110 through 9/15/2025",
+            "$125 through 12/12/2025",
+            "$150 through 3/13/2026",
+            "TBA through 6/12/2026",
+            "TBA through show time."
+        );
+        final DragonConRateParser parser = new DragonConRateParser(mockDoc);
+
+        final List<DragonConRate> rates = parser.fetchRatesAndDeadlines();
+
+        Assertions.assertEquals(5, rates.size(), "Should parse all 5 rates");
+
+        // Verify first rate
+        Assertions.assertEquals("$110", rates.get(0).getPrice());
+        Assertions.assertEquals(LocalDate.of(2025, 9, 15), rates.get(0).getDeadline());
+        Assertions.assertFalse(rates.get(0).getIsTBA());
+
+        // Verify second rate
+        Assertions.assertEquals("$125", rates.get(1).getPrice());
+        Assertions.assertEquals(LocalDate.of(2025, 12, 12), rates.get(1).getDeadline());
+        Assertions.assertFalse(rates.get(1).getIsTBA());
+
+        // Verify third rate
+        Assertions.assertEquals("$150", rates.get(2).getPrice());
+        Assertions.assertEquals(LocalDate.of(2026, 3, 13), rates.get(2).getDeadline());
+        Assertions.assertFalse(rates.get(2).getIsTBA());
+
+        // Verify fourth rate (TBA with deadline)
+        Assertions.assertEquals("TBA", rates.get(3).getPrice());
+        Assertions.assertEquals(LocalDate.of(2026, 6, 12), rates.get(3).getDeadline());
+        Assertions.assertTrue(rates.get(3).getIsTBA());
+
+        // Verify fifth rate (TBA without specific deadline - "show time" is not a parseable date)
+        Assertions.assertEquals("TBA", rates.get(4).getPrice());
+        Assertions.assertNull(rates.get(4).getDeadline(), "Non-parseable deadline should be null");
+        Assertions.assertTrue(rates.get(4).getIsTBA());
+    }
+
+    /**
+     * Test that heading matching is case-insensitive and handles optional colon.
+     */
+    @Test
+    void testFetchRatesAndDeadlines_HeadingWithColon() throws Exception {
+        // The helper creates an h3 with a colon - this should still match
+        final Document mockDoc = createMockDocument("$100 through 1/1/2026");
+        final DragonConRateParser parser = new DragonConRateParser(mockDoc);
+
+        final List<DragonConRate> rates = parser.fetchRatesAndDeadlines();
+
+        Assertions.assertEquals(1, rates.size());
+        Assertions.assertEquals("$100", rates.get(0).getPrice());
+        Assertions.assertEquals(LocalDate.of(2026, 1, 1), rates.get(0).getDeadline());
     }
 }

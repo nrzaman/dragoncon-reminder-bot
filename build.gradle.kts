@@ -16,6 +16,7 @@ repositories {
 dependencies {
     implementation("net.dv8tion:JDA:6.2.0")
     implementation("org.jsoup:jsoup:1.21.2")
+    runtimeOnly("ch.qos.logback:logback-classic:1.5.6") // Use 1.3.x for Java 8
 
     // JUnit 5 dependencies
     testImplementation("org.mockito:mockito-core:5.+")
@@ -45,4 +46,13 @@ application {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+}
+
+// Create a fat JAR with all dependencies
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "com.dragoncon_reminder.bot.Bot"
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 }

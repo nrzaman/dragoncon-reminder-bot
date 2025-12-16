@@ -17,6 +17,9 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
  */
 public class CommandListener extends ListenerAdapter {
 
+    /**
+     * Handling the supported commands.
+     */
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         switch (event.getName()) {
@@ -124,12 +127,12 @@ public class CommandListener extends ListenerAdapter {
             if (daysUntil != 1) response.append("s");
             response.append("**\n\n");
 
-            if (daysUntil <= 7) {
+            if (daysUntil <= Constants.DAYS_IN_WEEK) {
                 response.append("⚠️ **Deadline is approaching soon!**");
-            } else if (daysUntil <= 30) {
+            } else if (daysUntil <= Constants.DAYS_IN_MONTH) {
                 response.append("⏰ Deadline is coming up this month.");
             } else {
-                response.append("✅ You still have plenty of time.");
+                response.append("✅ You still have plenty of time!");
             }
 
             event.getHook().sendMessage(response.toString()).queue();

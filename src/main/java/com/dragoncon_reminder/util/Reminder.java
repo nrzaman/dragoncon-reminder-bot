@@ -25,7 +25,7 @@ public final class Reminder {
         // Grab today's date to check against the parsed deadlines.
         final LocalDate today = LocalDate.now(Constants.ZONE);
         // Constant thresholds measured in days to determine whether today's date is in one of these windows.
-        final int[] thresholdsInDays = { 30, 14, 7, 3, 1, 0 };
+        final int[] thresholdsInDays = { Constants.DAYS_IN_MONTH, (Constants.DAYS_IN_WEEK * 2), Constants.DAYS_IN_WEEK, 3, 1, 0 };
 
         final StringBuffer reminder = new StringBuffer();
 

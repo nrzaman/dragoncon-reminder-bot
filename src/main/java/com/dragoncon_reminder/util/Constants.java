@@ -20,4 +20,7 @@ public final class Constants {
 
     public static final String LIST_ALL_DEADLINES_COMMAND = "list-all-deadlines";
     public static final String NEXT_DEADLINE_COMMAND = "next-deadline";
+
+    public static final int DAYS_IN_MONTH = 30;
+    public static final int DAYS_IN_WEEK = 7;
 }

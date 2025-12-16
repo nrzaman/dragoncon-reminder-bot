@@ -20,9 +20,9 @@ public final class DragonConRateParser {
      */
     public DragonConRateParser() throws IOException {
         this.dragonConMembershipSite = Jsoup.connect(Constants.MEMBERSHIP_URL)
-        .userAgent("Mozilla/5.0 (compatible; RemidnerBot/1.0")
-        .timeout(15000)
-        .get();
+            .userAgent("Mozilla/5.0 (compatible; ReminderBot/1.0)")
+            .timeout(15000)
+            .get();
     }
 
     /**
@@ -62,8 +62,18 @@ public final class DragonConRateParser {
      * @throws IllegalStateException in case there are any issues when parsing the text block(s).
      */
     private final String getRelevantTextBlock(final Document doc) throws IllegalStateException {
-        // Find the relevant heading to grab the data.
-        final Element heading = doc.selectFirst("h1,h2,h3,h4,h5,h6:matchesOwn((?i)" + Constants.SECTION_HEADING + ")");
+        // Find the relevant heading to grab the data (with or without colon).
+        Element heading = null;
+        for (Element h : doc.select("h1,h2,h3,h4,h5,h6")) {
+            String headingText = h.text().trim();
+
+            if (headingText.equalsIgnoreCase(Constants.SECTION_HEADING) ||
+                headingText.equalsIgnoreCase(Constants.SECTION_HEADING + ":")) {
+                heading = h;
+                break;
+            }
+        }
+
         if (heading == null) {
             throw new IllegalStateException("There was an error trying to grab the following section heading: " + Constants.SECTION_HEADING);
         }
@@ -74,10 +84,20 @@ public final class DragonConRateParser {
             throw new IllegalStateException("There was an error trying to grab the content after the heading: " + Constants.SECTION_HEADING);
         }
 
-        // Reformat the string.
-        final String html = block.html().replace("<br>", "\n").replace("<br/>", "\n").replace("<br />", "\n");
+        // Use a more direct approach: get the text content while preserving line breaks
+        // Create a temporary document with the block's HTML
+        final Document tempDoc = Jsoup.parse(block.html());
 
-        return Jsoup.parse(html.replace("\n", "<<<N>>>")).text().replace("<<<N>>>", "\n");
+        // Replace all <br> tags with a unique marker before getting text
+        tempDoc.select("br").before("|||NEWLINE|||");
+
+        // Get the text content
+        String text = tempDoc.text();
+
+        // Replace the marker with actual newlines
+        text = text.replace("|||NEWLINE|||", "\n");
+
+        return text;
     }
 
     /**
