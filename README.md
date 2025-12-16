@@ -38,7 +38,7 @@ In your Discord server, you may use the following commands outside of the remind
 <img width="484" height="224" alt="image" src="https://github.com/user-attachments/assets/a403f382-551c-4cdd-b2a1-913182749907" />
 
 - `/next-deadline`: Lists details on the upcoming deadline.
-- <img width="384" height="218" alt="image" src="https://github.com/user-attachments/assets/daf77f11-8dc1-4929-af03-7e4911ab396d" />
+<img width="384" height="218" alt="image" src="https://github.com/user-attachments/assets/daf77f11-8dc1-4929-af03-7e4911ab396d" />
 
 ## Troubleshooting
 
