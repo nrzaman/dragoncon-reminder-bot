@@ -2,9 +2,11 @@
 
 [DragonCon](https://www.dragoncon.org/) is a multigenre fan-run convention that occurs every year during Labor Day weekend in downtown Atlanta. DragonCon memberships (also referred to as tickets) go on sale up to a year in advance. Throughout the year on a quarterly basis, DragonCon increases their 5-day membership prices leading up to the event, incentivizing attendees to purchase their memberships as early as possible.
 
-This bot will automatically post reminders of DragonCon price increases every 3 months starting on 3/1/2026 to a server and channel of your choosing.
+This bot will automatically post reminders of DragonCon price increases every 3 months starting on 3/1/2026 to a Discord server and channel of your choosing.
 
 ## Usage
+
+This bot was developed on macOS and is currently only supported on macOS and Linux operating systems.
 
 ### 1. Setup the Bot
 
@@ -32,7 +34,7 @@ docker-compose logs -f
 ```
 
 ### 3. Discord Slash Commands
-In your Discord server, you may use the following commands outside of the reminder windows:
+In Discord, you may use the following commands outside of the quarterly automated reminders:
 
 - `/list-all-deadlines`: Lists all deadlines on the DragonCon site regardless of whether dates are already expired.
 <img width="484" height="224" alt="image" src="https://github.com/user-attachments/assets/a403f382-551c-4cdd-b2a1-913182749907" />
