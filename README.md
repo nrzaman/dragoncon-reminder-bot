@@ -81,7 +81,7 @@ In Discord, you may use the following commands outside of the quarterly automate
 <img width="384" height="218" alt="image" src="https://github.com/user-attachments/assets/daf77f11-8dc1-4929-af03-7e4911ab396d" />
 
 ### 4. Deployment
-Please not that this bot is currently deployed on an in-house server running a Kubernetes cluster.
+Please note that this bot is currently deployed on an in-house server running a Kubernetes cluster.
 The below steps assume a similar setup.
 
 #### Prerequisites
