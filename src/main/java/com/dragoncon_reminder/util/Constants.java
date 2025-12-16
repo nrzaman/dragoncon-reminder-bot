@@ -9,7 +9,7 @@ import java.time.ZoneId;
 public final class Constants {
     public static final String MEMBERSHIP_URL = "https://dragoncon.org/about/membership-info/";
     public static final ZoneId ZONE = ZoneId.of("America/New_York");
-    public static final String SECTION_HEADING = "Dragon Con 5-Day Membership Rates";
+    public static final String SECTION_HEADING = "Dragon Con 5-Day Membership Rates:";
     
     // Schedule configuration: First run on March 1, 2026, then every 3 months
     public static final LocalDate FIRST_RUN_DATE = LocalDate.of(2026, 3, 1);

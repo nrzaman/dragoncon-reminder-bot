@@ -62,13 +62,12 @@ public final class DragonConRateParser {
      * @throws IllegalStateException in case there are any issues when parsing the text block(s).
      */
     private final String getRelevantTextBlock(final Document doc) throws IllegalStateException {
-        // Find the relevant heading to grab the data (with or without colon).
+        // Find the relevant heading to grab the data.
         Element heading = null;
         for (Element h : doc.select("h1,h2,h3,h4,h5,h6")) {
             String headingText = h.text().trim();
 
-            if (headingText.equalsIgnoreCase(Constants.SECTION_HEADING) ||
-                headingText.equalsIgnoreCase(Constants.SECTION_HEADING + ":")) {
+            if (headingText.equalsIgnoreCase(Constants.SECTION_HEADING)) {
                 heading = h;
                 break;
             }

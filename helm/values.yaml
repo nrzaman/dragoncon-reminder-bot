@@ -6,9 +6,9 @@
 image:
   # Repository where the image is stored
   # Options:
-  #   - Docker Hub: ntzaman/dragoncon-reminder-bot
+  #   - Docker Hub: nrzaman/dragoncon-reminder-bot
   #   - Nexus: nexus.your-cluster.com/dragoncon-reminder-bot (TBD)
-  repository: ""  # REQUIRED: Set this to your image repository
+  repository: "nrzaman/dragoncon-reminder-bot"
   pullPolicy: IfNotPresent
   tag: "latest"
 

@@ -19,7 +19,7 @@ import com.dragoncon_reminder.util.Reminder;
 public class Bot {
     public static void main(String[] args) throws Exception {
         // Retrieve relevant environment variables to be able to connect to Discord.
-        final DiscordConnector messageSender = new DiscordConnector();
+        final DiscordConnector discordConnector = new DiscordConnector();
 
         // Create the task that will check rates and send reminders
         Runnable task = () -> {
@@ -35,7 +35,7 @@ public class Bot {
                 // Send the reminder to the channel in case a threshold is met (list would be populated if so).
                 if (!reminderAsString.isEmpty()) {
                     // Send the message to the channel.
-                    messageSender.sendMessage(reminderAsString);
+                    discordConnector.sendMessage(reminderAsString);
                     System.out.println("Reminder sent: " + reminderAsString);
                 } else {
                     System.out.println("No reminders to send (no deadlines match threshold).");

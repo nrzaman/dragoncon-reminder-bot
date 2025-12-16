@@ -5,13 +5,17 @@ import java.util.List;
 import java.time.Duration;
 import java.time.LocalDate;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * This is a helper class that builds out a reminder that will be posted to a Discord channel.
  */
 public final class Reminder {
     /**
-     * Constructor to instantiate a DragonConRateParser object.
+     * Constructor to instantiate a DragonConRateParser object. 
+     * This is needed primarily to be able to mock for testing.
      */
+    @VisibleForTesting
     public Reminder() {
         // Intentionally left blank.
     }
@@ -35,15 +39,15 @@ public final class Reminder {
             }
 
             // Determine the difference between today's date and a given deadline in days.
-            final long days = Duration.between(today.atStartOfDay(Constants.ZONE), 
+            final long numDays = Duration.between(today.atStartOfDay(Constants.ZONE), 
             dragonConRate.deadline.atStartOfDay(Constants.ZONE)).toDays();
 
             // Check the difference (duration) against the pre-definined thresholds in order to determine whether a reminder should be built.
             for (final int threshold : thresholdsInDays) {
-                if (threshold == days) {
+                if (threshold == numDays) {
                     reminder.append(String.format("The DragonCon membership price (current: %s) will increase in %d day(s) (%s).",
                         dragonConRate.price,
-                        days,
+                        numDays,
                         dragonConRate.deadline
                     ));
 

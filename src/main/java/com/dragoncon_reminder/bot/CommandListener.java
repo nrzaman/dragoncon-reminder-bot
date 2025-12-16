@@ -19,6 +19,7 @@ public class CommandListener extends ListenerAdapter {
 
     /**
      * Handling the supported commands.
+     * @param event the interaction event to parse from the user.
      */
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -54,8 +55,9 @@ public class CommandListener extends ListenerAdapter {
             }
 
             // Build the response message
-            final StringBuilder response = new StringBuilder("**DragonCon 5-Day Membership Rates:**\n\n");
+            final StringBuffer response = new StringBuffer("**DragonCon 5-Day Membership Rates:**\n\n");
 
+            // Format all of the rates pulled from the website
             for (final DragonConRate rate : rates) {
                 response.append("• **").append(rate.getPrice()).append("**");
 
@@ -119,7 +121,7 @@ public class CommandListener extends ListenerAdapter {
 
             // Build the response message
             final long daysUntil = ChronoUnit.DAYS.between(today, nextDeadline.getDeadline());
-            final StringBuilder response = new StringBuilder("**Next Deadline:**\n\n");
+            final StringBuffer response = new StringBuffer("**Next Deadline:**\n\n");
 
             response.append("• Current rate: **").append(nextDeadline.getPrice()).append("**\n");
             response.append("• Deadline: **").append(nextDeadline.getDeadline()).append("**\n");

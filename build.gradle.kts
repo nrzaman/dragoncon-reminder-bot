@@ -14,6 +14,8 @@ repositories {
 }
 
 dependencies {
+    // Guava library for @VisibleForTesting annotation
+    implementation("com.google.guava:guava:33.5.0-jre")
     implementation("net.dv8tion:JDA:6.2.0")
     implementation("org.jsoup:jsoup:1.21.2")
     runtimeOnly("ch.qos.logback:logback-classic:1.5.6") // Use 1.3.x for Java 8

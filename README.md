@@ -8,29 +8,61 @@ This bot will automatically post reminders of DragonCon price increases every 3 
 
 This bot was developed on macOS and is currently only supported on macOS and Linux operating systems.
 
-### 1. Setup the Bot
-
-```bash
-# Run the setup script - this will automatically install colima
-./setup-colima.sh
-
-# Follow the prompts to configure your .env file
+### 1. Prerequisites
+- Install [Homebrew](https://brew.sh/)
+- Install `gradle` by typing the following in a Terminal window:
+```
+brew install gradle
+```
+- Install Docker by typing the following in a Terminal window:
+```
+brew install docker
+```
+- Install Colima (optional for macOS) by typing the following in a Terminal window:
+```
+brew install colima
+```
+- Install `kubectl` by typing the following in a Terminal window:
+```
+brew install kubectl
+```
+- Install `helm` by typing the following in a Terminal window:
+```
+brew install helm
 ```
 
-### 2. Build and Run
+#### Set environment variables
+1. Grab a [Discord Bot Token](https://discordgsm.com/guide/how-to-get-a-discord-bot-token) from your Discord server.
+2. Grab a [Discord Channel ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID#h_01HRSTXPS5FMK2A5SMVSX4JW4E) from the Discord channel that you'd like the bot to post reminders to.
+3. Use the following token values to update your environment variables by using the example file provided:
+```bash
+   # Copy the example file to a local .env
+   cp .env.example .env
+
+   # Open the .env file to edit with credentials
+   vim .env
+```
+4. You may also need to run the following commands:
+```bash
+export DISCORD_TOKEN=[YOUR TOKEN HERE]
+
+export DISCORD_CHANNEL_ID=[YOUR CHANNEL ID HERE]
+```
+
+### 2. Build and Run (Quickstart)
 
 ```bash
-# Build everything
-./setup-colima.sh build
+# Build the JAR file
+make build
 
-# Start the bot
-./setup-colima.sh start
+# Run the bot in Docker
+make docker-run
 
-# View logs
-docker-compose logs -f
+# Stop the bot in Docker
+make docker-stop
 
-# Stop the bot
-./setup-colima.sh stop
+# List all make commands
+make help
 ```
 
 ### 3. Discord Slash Commands
@@ -42,16 +74,22 @@ In Discord, you may use the following commands outside of the quarterly automate
 - `/next-deadline`: Lists details on the upcoming deadline.
 <img width="384" height="218" alt="image" src="https://github.com/user-attachments/assets/daf77f11-8dc1-4929-af03-7e4911ab396d" />
 
-## Troubleshooting
-
-### Colima won't start
+### 4. Deployment
 
 ```bash
-# Delete and recreate
-colima delete
+# Build the Docker image with a version tag
+make docker-build VERSION=[VERSION NUMBER]
 
-./setup-colima.sh start
+# Push the Docker image with a version tag
+make docker-push VERSION=[VERSION NUMBER]
 ```
+
+## Troubleshooting
+
+### Building in VS Code, unrecognized dependencies
+1. Open the Command Palette in VS Code by using the keyboard shortcut `Cmd + Shift + P`.
+2. Run the following command: `Java: Reload Projects`.
+3. If the above command does not resolve the issue, please try the following command: `Java: Clean Java Language Server Workspace`.
 
 ### Docker command not found
 
@@ -63,48 +101,6 @@ brew install docker docker-compose
 export PATH="/usr/local/bin:$PATH"
 ```
 
-### Cannot connect to Docker daemon
-
-```bash
-# Check Colima is running
-colima status
-
-# If running, set the Docker context
-docker context use colima
-
-# Verify
-docker context ls
-```
-
-### Permission denied
-
-```bash
-# Restart Colima
-colima restart
-
-# Or delete and recreate
-colima delete
-colima start
-```
-
-### Out of disk space
-
-```bash
-# Stop Colima
-colima stop
-
-# Start with more disk space
-colima start --cpu 4 --memory 4 --disk 200
-```
-
-### Check Colima logs
-
-```bash
-colima logs
-```
-
 ## Additional Resources
 
-- [Colima GitHub](https://github.com/abiosoft/colima)
-- [Colima Documentation](https://github.com/abiosoft/colima/blob/main/README.md)
 - [Docker Documentation](https://docs.docker.com/)

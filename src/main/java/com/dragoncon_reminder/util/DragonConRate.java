@@ -2,6 +2,8 @@ package com.dragoncon_reminder.util;
 
 import java.time.LocalDate;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * DragonConRate is an object that contains all relevant details pertaining the DragonCon price rates and their associated deadlines.
  */
@@ -28,16 +30,20 @@ public final class DragonConRate {
 
     /**
      * Returns the raw text line without specific items parsed.
+     * This is visible in order to be able to mock and verify for testing.
      * @return the raw text line without specific items parsed.
      */
+    @VisibleForTesting
     public final String getRawLine() {
         return this.rawLine;
     }
 
     /**
      * Returns the price as a String.
+     * This is visible in order to be able to mock and verify for testing.
      * @return the price as a String.
      */
+    @VisibleForTesting
     public final String getPrice() {
         return this.price;
     }
@@ -46,14 +52,17 @@ public final class DragonConRate {
      * Returns true if the price value is TBA, false if not.
      * @return true if the price value is TBA, false if not.
      */
+    @VisibleForTesting
     public final boolean getIsTBA() {
         return this.isTBA;
     }
 
     /**
      * Returns the deadline associated with the price.
+     * This is visible in order to be able to mock and verify for testing.
      * @return the deadline associated with the price.
      */
+    @VisibleForTesting
     public final LocalDate getDeadline() {
         return this.deadline;
     }

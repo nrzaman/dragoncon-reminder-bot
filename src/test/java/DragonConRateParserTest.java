@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import java.time.LocalDate;
 import java.util.List;
 import com.dragoncon_reminder.util.DragonConRateParser;
+import com.dragoncon_reminder.util.Constants;
 import com.dragoncon_reminder.util.DragonConRate;
 
 public class DragonConRateParserTest {
@@ -16,8 +17,10 @@ public class DragonConRateParserTest {
      * @return a Jsoup Document with realistic HTML structure
      */
     private final Document createMockDocument(final String... rates) {
-        StringBuilder html = new StringBuilder("<html><body>");
-        html.append("<h3>Dragon Con 5-Day Membership Rates:</h3>");
+        StringBuffer html = new StringBuffer("<html><body>");
+        html.append("<h3>");
+        html.append(Constants.SECTION_HEADING);
+        html.append("</h3>");
         html.append("<p>");
 
         for (int i = 0; i < rates.length; i++) {
@@ -203,7 +206,7 @@ public class DragonConRateParserTest {
      */
     @Test
     void testFetchRatesAndDeadlines_MissingContentBlock() {
-        final String html = "<html><body><h2>Dragon Con 5-Day Membership Rates</h2></body></html>";
+        final String html = "<html><body><h2>" + Constants.SECTION_HEADING + "</h2></body></html>";
         final Document mockDoc = Jsoup.parse(html);
         final DragonConRateParser parser = new DragonConRateParser(mockDoc);
 
