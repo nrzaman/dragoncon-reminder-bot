@@ -1,0 +1,44 @@
+# Gradle
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Build outputs (except the JAR we need)
+build/classes/
+build/generated/
+build/reports/
+build/test-results/
+build/tmp/
+build/distributions/
+
+# Source code (not needed in Docker image since we use the JAR)
+src/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# Test files
+src/test/
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
+
+# Environment files (should never be in the image)
+.env
+.env.local

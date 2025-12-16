@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  dragoncon-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dragoncon-reminder-bot
+    restart: unless-stopped
+    environment:
+      # These should be set via .env file or passed at runtime
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID}
+    # Set timezone to match the bot's timezone (America/New_York)
+      - TZ=America/New_York
+    # Limit resources (optional)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
