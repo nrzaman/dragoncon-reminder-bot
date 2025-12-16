@@ -1,5 +1,7 @@
 # DragonCon Reminder Bot
 
+<img width="262.5" height="203.25" alt="image" src="https://github.com/user-attachments/assets/48686167-198c-455a-8d02-d5da69e89c8c" />
+
 [DragonCon](https://www.dragoncon.org/) is a multigenre fan-run convention that occurs every year during Labor Day weekend in downtown Atlanta. DragonCon memberships (also referred to as tickets) go on sale up to a year in advance. Throughout the year on a quarterly basis, DragonCon increases their 5-day membership prices leading up to the event, incentivizing attendees to purchase their memberships as early as possible.
 
 This bot will automatically post reminders of DragonCon price increases every 3 months starting on 3/1/2026 to a Discord server and channel of your choosing.
