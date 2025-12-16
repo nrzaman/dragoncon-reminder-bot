@@ -51,7 +51,7 @@ export DISCORD_TOKEN=[YOUR TOKEN HERE]
 export DISCORD_CHANNEL_ID=[YOUR CHANNEL ID HERE]
 ```
 
-### 2. Build and Run (Quickstart)
+### 2. Build and Run Locally (Quickstart)
 Run the following commands in a Terminal window from the root `dragoncon-reminder-bot` directory:
 
 ```bash
@@ -81,7 +81,30 @@ In Discord, you may use the following commands outside of the quarterly automate
 <img width="384" height="218" alt="image" src="https://github.com/user-attachments/assets/daf77f11-8dc1-4929-af03-7e4911ab396d" />
 
 ### 4. Deployment
-Run the following commands in a Terminal window from the root `dragoncon-reminder-bot` directory:
+Please not that this bot is currently deployed on an in-house server running a Kubernetes cluster.
+The below steps assume a similar setup.
+
+#### Prerequisites
+1. Copy / create a Kubernetes config file to be able to use `kubectl`
+2. Run the following command to confirm `kubectl` is running:
+```bash
+kubectl get po
+```
+3. Create `dragoncon-reminder-bot-values.yml` in the root directory by typing:
+```bash
+vim dragoncon-reminder-bot-values.yml
+```
+4. Add the following information to `dragoncon-reminder-bot-values.yml` and save it
+```bash
+discord:
+  # Discord bot token - REQUIRED
+  token: "[DISCORD TOKEN]"
+  # Discord channel ID where messages will be sent - REQUIRED
+  channelId: "[DISCORD CHANNEL ID]"
+```
+
+#### Deployment Steps
+1. Run the following commands in a Terminal window from the root `dragoncon-reminder-bot` directory:
 
 ```bash
 # Build the JAR file
@@ -92,6 +115,28 @@ make docker-build VERSION=[VERSION NUMBER]
 
 # Push the Docker image with a version tag
 make docker-push VERSION=[VERSION NUMBER]
+```
+
+2. Update `./helm/values.yaml` under the `image:` section, next to `tag:` to match the version number specified above 
+3. Run the following command to deploy:
+```bash
+helm upgrade --install dragoncon-reminder-bot ./helm --values dragoncon-reminder-bot-values.yml
+```
+4. Verify deployment by running the following command and observing that `dragoncon-reminder-bot` exists in the list of services running and reads `1/1` under the `READY` column:
+```bash
+kubectl get po
+```
+5. Deployment may also be verified in Discord directly by typing one of the slash commands listed above in a channel
+
+#### View Logs
+1. Run the following command to grab the pod name:
+```bash
+kubectl get po
+```
+2. Copy the `dragoncon-reminder-bot` pod name
+3. Run the following command to view the logs:
+```bash
+kubectl logs dragoncon-reminder-bot-[IDENTIFIER]
 ```
 
 ## Troubleshooting
