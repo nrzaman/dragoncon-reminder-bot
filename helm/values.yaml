@@ -1,0 +1,86 @@
+# Default values for dragoncon-reminder-bot Helm chart
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Docker image configuration
+image:
+  # Repository where the image is stored
+  # Options:
+  #   - Docker Hub: ntzaman/dragoncon-reminder-bot
+  #   - Nexus: nexus.your-cluster.com/dragoncon-reminder-bot (TBD)
+  repository: ""  # REQUIRED: Set this to your image repository
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+# Image pull secrets (only needed for private registries like Nexus)
+imagePullSecrets: []
+  # - name: nexus-registry-secret
+
+# Discord bot credentials
+# IMPORTANT: These should be set via --set flags or a separate values file
+# Example: helm install --set discord.token="your-token" --set discord.channelId="your-channel-id"
+discord:
+  # Discord bot token - REQUIRED
+  token: ""
+  # Discord channel ID where messages will be sent - REQUIRED
+  channelId: ""
+
+# Number of bot replicas (usually 1 for Discord bots to avoid duplicate messages)
+replicaCount: 1
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m      # 0.5 CPU cores
+    memory: 512Mi  # 512 MB RAM
+  requests:
+    cpu: 250m      # 0.25 CPU cores
+    memory: 256Mi  # 256 MB RAM
+
+# Pod restart policy
+restartPolicy: Always
+
+# Timezone for the bot (DragonCon is in Eastern Time)
+timezone: "America/New_York"
+
+# Security context for the pod
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+# Node selector for pod placement (optional)
+nodeSelector: {}
+
+# Tolerations for pod scheduling (optional)
+tolerations: []
+
+# Affinity rules for pod scheduling (optional)
+affinity: {}
+
+# Liveness probe configuration
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 40
+  periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 3
+  exec:
+    command:
+      - /bin/sh
+      - -c
+      - pgrep -f "java.*app.jar" || exit 1
+
+# Readiness probe configuration
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+  exec:
+    command:
+      - /bin/sh
+      - -c
+      - pgrep -f "java.*app.jar" || exit 1

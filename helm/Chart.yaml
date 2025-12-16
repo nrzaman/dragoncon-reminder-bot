@@ -1,0 +1,13 @@
+apiVersion: v2
+name: dragoncon-reminder-bot
+description: A Discord bot that reminds users about DragonCon membership rate deadlines
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - discord
+  - bot
+  - dragoncon
+  - reminder
+maintainers:
+  - name: NaibenGPT

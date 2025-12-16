@@ -1,0 +1,43 @@
+DragonCon Reminder Bot has been deployed!
+
+Release Name: {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+
+To check the status of your deployment:
+  kubectl get deployment {{ .Chart.Name }} -n {{ .Release.Namespace }}
+
+To view the bot logs:
+  kubectl logs -f deployment/{{ .Chart.Name }} -n {{ .Release.Namespace }}
+
+To check if the pod is running:
+  kubectl get pods -l app={{ .Chart.Name }} -n {{ .Release.Namespace }}
+
+The bot will:
+- Check DragonCon membership rates quarterly (every 90 days starting March 1, 2026)
+- Respond to Discord slash commands:
+    /list-all-deadlines - Show all membership rate deadlines
+    /next-deadline - Show the next upcoming deadline
+
+Configuration:
+- Discord Channel ID: {{ .Values.discord.channelId }}
+- Image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+- Timezone: {{ .Values.timezone }}
+- Replicas: {{ .Values.replicaCount }}
+
+{{- if not .Values.image.repository }}
+
+WARNING: Image repository is not set!
+Please update values.yaml with your Docker image repository.
+{{- end }}
+
+{{- if not .Values.discord.token }}
+
+WARNING: Discord token is not set!
+The bot will not be able to connect to Discord.
+{{- end }}
+
+{{- if not .Values.discord.channelId }}
+
+WARNING: Discord channel ID is not set!
+The bot will not know where to send messages.
+{{- end }}
