@@ -61,7 +61,7 @@ public class Bot {
         scheduler.scheduleAtFixedRate(
             task,
             initialDelayDays,        // Initial delay in days
-            Constants.INTERVAL_DAYS, // Period between runs (90 days)
+            Constants.INTERVAL_DAYS, // Period between runs (in days)
             TimeUnit.DAYS            // Time unit
         );
 
