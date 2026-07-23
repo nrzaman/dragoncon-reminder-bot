@@ -156,6 +156,24 @@ brew install docker docker-compose
 export PATH="/usr/local/bin:$PATH"
 ```
 
+### Is the docker daemon running? Error at 'starting'
+
+If you see an error when attempting to run `docker make-build` AND `colima start`, there might be some stale processes that need to be killed. Run the following commands:
+
+```bash
+# Clean up sockets/pid files
+colima stop -f
+
+# View the colima/limactl processes still running and retrieve their pids
+ps aux | grep -i -E "colima|limactl" | grep -v grep
+
+# Kill the pids from above
+kill <pid1> <pid2> ... <pidn>
+
+# Try again
+colima start
+```
+
 ## Additional Resources
 
 - [Docker Documentation](https://docs.docker.com/)
